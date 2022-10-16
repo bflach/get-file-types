@@ -5,6 +5,7 @@ or the path provided in the command line argument.
 import argparse
 import pathlib
 from pathlib import Path
+import pkgutil
 import csv
 import magic
 from tqdm import tqdm
@@ -39,8 +40,15 @@ except Exception as e:
 output_filename = Path(args.output_file) if args.output_file else Path('file_info.csv')
 
 # Define the "magic database file" location
-file_magic = magic.Magic(magic_file='magic.mgc')
-file_magic_mime = magic.Magic(magic_file='magic.mgc', mime=True)
+try:
+    magic_file = Path('magic.mgc')
+    magic_file.resolve(strict=True)
+    file_magic = magic.Magic(magic_file=magic_file)
+    file_magic_mime = magic.Magic(magic_file=magic_file, mime=True)
+except FileNotFoundError:
+    print(f'No magic.mgc file available in the working directory. Bundled magic.mgc file will be used.')
+    file_magic = magic.Magic()
+    file_magic_mime = magic.Magic(mime=True)
 
 try:
     with open(output_filename, 'w', newline='') as output_file:

@@ -1,2 +1,5 @@
 # Ignore output CSV files
 *.csv
+
+# Ignore build files from build directory
+/build
