@@ -57,7 +57,7 @@ try:
             ['File Name', 'File Name Stem', 'File Extension', 'File Type', 'File Type - mime',
              'Absolute Path'])  # Write csv header
         for file in tqdm(lookup_path_list):
-            print(file)  # print current file path to the console
+            tqdm.write(file.name)  # print current file path to the console
             try:  # Try to get the file type information
                 file_type = file_magic.from_file(file)
                 file_type_mime = file_magic_mime.from_file(file)
